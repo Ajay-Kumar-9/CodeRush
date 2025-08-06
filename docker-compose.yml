@@ -1,0 +1,21 @@
+services:
+  frontend:
+    image: editor-frontend
+    container_name: frontend-container
+    ports:
+      - "3000:3000"  # Exposing frontend on port 3000
+  
+  backend:
+    image: editor-backend
+    container_name: backend-container
+    ports:
+      - "5000:5000"  # Exposing backend on port 5000
+    environment:
+      - REDIS_HOST=redis  # This connects the backend to the Redis service by using its service name
+    depends_on:
+      - redis  # Ensures that backend waits until Redis service is ready
+  
+  redis:
+    image: redis:alpine  # Using official Redis image with alpine tag for smaller size
+    ports:
+      - "6379:6379"  # Exposing Redis on the default port (6379)
