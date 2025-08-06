@@ -1,12 +1,12 @@
 services:
   frontend:
-    image: editor-frontend
+    image: ajay0036/editor-frontend:latest
     container_name: frontend-container
     ports:
       - "3000:3000"  # Exposing frontend on port 3000
   
   backend:
-    image: editor-backend
+    image: ajay0036/editor-backend:latest
     container_name: backend-container
     ports:
       - "5000:5000"  # Exposing backend on port 5000

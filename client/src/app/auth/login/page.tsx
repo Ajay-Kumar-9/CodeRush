@@ -55,7 +55,7 @@ export default function LoginPage() {
       }
 
       // If login is successful, redirect to the editor page
-      toast.success(data.message + " navigating to editorPage ");
+      toast.success(data.message );
 
       createRoom();
     } catch (error) {
