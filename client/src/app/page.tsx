@@ -20,7 +20,7 @@ const NEXT_PUBLIC_FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL;
   const Router = useRouter();
 
   const Login = ()=>{
-    Router.push(`${NEXT_PUBLIC_FRONTEND_URL}/auth/login`)
+    Router.push(`/auth/login`)
   }
 
 
