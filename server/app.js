@@ -10,6 +10,7 @@ import { ConnectDB } from "./Config/db.js";
 
 dotenv.config();
 const app = express();
+app.use(bodyParser.json());
 
 app.use(
   cors({
@@ -18,7 +19,7 @@ app.use(
   })
 );
 
-app.use(bodyParser.json());
+
 
 app.get("/", (req, res) => {
   res.send(" Server Running");
