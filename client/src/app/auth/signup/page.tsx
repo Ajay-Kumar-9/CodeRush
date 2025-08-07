@@ -38,7 +38,7 @@ export default function SignupPage() {
 
     try {
       const response = await fetch(
-        `${NEXT_PUBLIC_BACKEND_URL}/api/auth/signup`,
+        `https://coderush-mr1i.onrender.com/api/auth/signup`,
         {
           method: "POST",
           headers: {

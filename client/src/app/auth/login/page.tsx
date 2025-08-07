@@ -37,7 +37,7 @@ export default function LoginPage() {
 
     try {
       const response = await fetch(
-        `${NEXT_PUBLIC_BACKEND_URL}/api/auth/login`,
+        `https://coderush-mr1i.onrender.com/api/auth/login`,
         {
           method: "POST",
           headers: {
