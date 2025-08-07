@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "*",
+    origin: "https://coderush-mr1i.onrender.com",
     credentials: true,
   })
 );
@@ -33,7 +33,7 @@ const rooms = {};
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "https://coderush-mr1i.onrender.com",
     methods: ["GET", "POST"],
     credentials: true,
   },
