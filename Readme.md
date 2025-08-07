@@ -6,18 +6,20 @@
 **CodeRush** is a real-time online code collaboration tool with built-in **chat**, **voice**, and **AI assistance** – all in your browser.
 
 ## Features
-- 🧑‍💻 Live collaborative code editing
-- 💬 Instant messaging & 🔊 voice chat
-- 🤖 AI assistant for coding help
-- 🧠 Smooth real-time experience
+- 🧑‍💻 Live collaborative code editing  
+- 💬 Instant messaging & 🔊 voice chat  
+- 🤖 AI assistant for coding help  
+- 🧠 Smooth real-time experience  
 
 ## ⚙️ Tech Stack
-- **Next.js** & **Tailwind CSS**
-- **Node.js** & **Express.js**
-- **Socket.IO** & **WebRTC**
-- **Redis** & **Docker**
+- **Next.js** & **Tailwind CSS**  
+- **Node.js** & **Express.js**  
+- **Socket.IO** & **WebRTC**  
+- **Redis** & **Docker**  
 - **OpenAI API**
 
----
+## 🚀 Running with Docker
+To run this project using Docker, make sure you have Docker and Docker Compose installed, then run:
 
-Made with 💻 by Ajay Kumar
+```bash
+docker-compose up
