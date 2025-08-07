@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://code-rush-ecru.vercel.app/",
+    origin: "https://code-rush-ecru.vercel.app",
     credentials: true,
   })
 );
@@ -33,7 +33,7 @@ const rooms = {};
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://code-rush-ecru.vercel.app/",
+    origin: "https://code-rush-ecru.vercel.app",
     methods: ["GET", "POST"],
     credentials: true,
   },
