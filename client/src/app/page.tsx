@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
@@ -9,20 +9,17 @@ import {
   FaBolt,
   FaCode,
 } from "react-icons/fa";
-import {useRouter} from 'next/navigation'
+import { useRouter } from "next/navigation";
 import Footer from "@/Components/Footer";
 
-
 export default function LandingPage() {
-
-const NEXT_PUBLIC_FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL;
+  const NEXT_PUBLIC_FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL;
 
   const Router = useRouter();
 
-  const Login = ()=>{
-    Router.push(`/auth/login`)
-  }
-
+  const Login = () => {
+    Router.push(`/auth/login`);
+  };
 
   return (
     <div className="min-h-screen bg-[#06044B]">
@@ -61,7 +58,8 @@ const NEXT_PUBLIC_FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL;
           <span className="text-[#E2C98C]">in Real-Time</span>
         </motion.h1>
         <p className="text-lg sm:text-xl md:text-2xl text-white/80 mb-8 max-w-2xl mx-auto">
-          Collaborate seamlessly with real-time code editing, AI help, voice calls, and instant team chat. Innovate together faster.
+          Collaborate seamlessly with real-time code editing, AI help, voice
+          calls, and instant team chat. Innovate together faster.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -88,32 +86,35 @@ const NEXT_PUBLIC_FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL;
               Powerful Features for Seamless Collaboration
             </h2>
             <p className="text-lg sm:text-xl text-[#06044B]/70 max-w-2xl mx-auto">
-              Real-time tools built for developers — code, communicate, and create together, faster than ever.
+              Real-time tools built for developers — code, communicate, and
+              create together, faster than ever.
             </p>
           </div>
 
           {/* Main Features Flex Container */}
           <div className="flex flex-wrap justify-center gap-6 lg:px-16 md:px-8 sm:px-4 px-2">
-            {[{
-              icon: <FaUsers />,
-              title: "Real-time Editing",
-              desc: "Collaborate live with shared cursors, instant code updates, and seamless teamwork.",
-            },
-            {
-              icon: <FaComments />,
-              title: "Live Chat",
-              desc: "Talk with your teammates without leaving the editor using integrated messaging.",
-            },
-            {
-              icon: <FaPhone />,
-              title: "Voice Calling",
-              desc: "Jump into instant voice calls directly from your coding workspace.",
-            },
-            {
-              icon: <FaRobot />,
-              title: "AI Assistance",
-              desc: "Get smart suggestions, bug fixes, and explanations from your built-in AI coding assistant.",
-            }].map((item, i) => (
+            {[
+              {
+                icon: <FaUsers />,
+                title: "Real-time Editing",
+                desc: "Collaborate live with shared cursors, instant code updates, and seamless teamwork.",
+              },
+              {
+                icon: <FaComments />,
+                title: "Live Chat",
+                desc: "Talk with your teammates without leaving the editor using integrated messaging.",
+              },
+              {
+                icon: <FaPhone />,
+                title: "Voice Calling",
+                desc: "Jump into instant voice calls directly from your coding workspace.",
+              },
+              {
+                icon: <FaRobot />,
+                title: "AI Assistance",
+                desc: "Get smart suggestions, bug fixes, and explanations from your built-in AI coding assistant.",
+              },
+            ].map((item, i) => (
               <motion.div
                 key={i}
                 whileHover={{ scale: 1.05 }}
@@ -125,9 +126,7 @@ const NEXT_PUBLIC_FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL;
                 <h3 className="text-xl sm:text-2xl font-bold mb-2 text-[#06044B]">
                   {item.title}
                 </h3>
-                <p className="text-[#06044B]/70 flex-grow">
-                  {item.desc}
-                </p>
+                <p className="text-[#06044B]/70 flex-grow">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -137,14 +136,16 @@ const NEXT_PUBLIC_FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL;
       {/* CTA Section */}
       <section className="py-20 px-4 bg-[#06044B] text-center text-[#E2C98C]">
         <h2 className="text-3xl sm:text-4xl font-bold mb-6">
-          Unlock the Future of Coding Collaboration
+          Collaborate Smarter. Build Faster.
         </h2>
         <p className="text-lg sm:text-xl text-[#E2C98C]/80 mb-8 max-w-2xl mx-auto">
-          Join a growing community of developers and start collaborating, coding, and creating in real-time with ease.
+          Experience seamless teamwork with developers worldwide. Code together,
+          innovate in real time, and bring your ideas to life — all in one
+          place.
         </p>
         <Link href="/auth/signup">
           <button className="px-2 py-2 text-lg bg-white text-[#06044B] hover:bg-[#E2C98C] rounded-lg font-semibold transition w-[200px] hover:cursor-pointer">
-            Signup Now
+            Get Started
           </button>
         </Link>
       </section>
