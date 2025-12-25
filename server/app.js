@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 
 app.use(
   cors({
-    origin: ["https://code-rush-ecru.vercel.app", "http://localhost:3000"],
+    origin: ["https://code-rush-two.vercel.app", "http://localhost:3000"],
     credentials: true,
   })
 );
@@ -34,7 +34,7 @@ const rooms = {};
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["https://code-rush-ecru.vercel.app", "http://localhost:3000"],
+    origin: ["https://code-rush-two.vercel.app", "http://localhost:3000"],
     methods: ["GET", "POST"],
     credentials: true,
   },
