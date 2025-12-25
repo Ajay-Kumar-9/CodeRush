@@ -37,7 +37,7 @@ export default function LoginPage() {
 
     try {
       const response = await fetch(
-        `https://coderush-mr1i.onrender.com/api/auth/login`,
+        `https://coderush-tvf3.onrender.com/api/auth/login`,
         {
           method: "POST",
           headers: {

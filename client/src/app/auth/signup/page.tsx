@@ -38,7 +38,7 @@ export default function SignupPage() {
 
     try {
       const response = await fetch(
-        `https://coderush-mr1i.onrender.com/api/auth/signup`,
+        `https://coderush-tvf3.onrender.com/api/auth/signup`,
         {
           method: "POST",
           headers: {
