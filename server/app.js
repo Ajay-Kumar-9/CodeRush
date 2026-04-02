@@ -12,12 +12,7 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 
-app.use(
-  cors({
-    origin: "*",
-    credentials: true,
-  }),
-);
+app.use(cors({origin : "https://coderush-tvf3.onrender.com"}))
 
 app.get("/", (req, res) => {
   res.send(" Server Running");
