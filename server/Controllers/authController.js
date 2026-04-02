@@ -3,11 +3,11 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 // Signup
-export const Signup = async (req, res) => {
+export const Signup = async (req, res, next) => {
   try {
     const { firstName, lastName, email, password, confirmPassword } = req.body;
-     console.log(req.body);
-     
+    console.log(req.body);
+
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
       return res.status(404).json({ message: "All fields are required" });
     }
@@ -39,20 +39,19 @@ export const Signup = async (req, res) => {
     const jwtToken = jwt.sign(
       { userId: NewUser._id, email: NewUser.email },
       process.env.JWT_SECRET,
-      { expiresIn: "12hr" }
+      { expiresIn: "12hr" },
     );
 
     res
       .status(201)
       .json({ message: "Signup successful", success: true, token: jwtToken });
-  } catch (error) {
-    console.error("Internal Server Error");
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    next(err);
   }
 };
 
 // Login
-export const Login = async (req, res) => {
+export const Login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -86,14 +85,13 @@ export const Login = async (req, res) => {
         email: user.email,
       },
       process.env.JWT_SECRET,
-      { expiresIn: "12hr" }
+      { expiresIn: "12hr" },
     );
 
     res
       .status(200)
       .json({ message: "Login Successfull", success: true, token: jwtToken });
-  } catch (error) {
-    console.error("Internal Server Error", error.message);
-    res.status(500).json({ message: error.message });
+  } catch (err) {
+    next(error);
   }
 };

@@ -3,7 +3,7 @@ dotenv.config();
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
-export const Gemini =  async (req, res) => {
+export const Gemini = async (req, res, next) => {
   const { message } = req.body;
 
   if (!message) {
@@ -26,7 +26,7 @@ export const Gemini =  async (req, res) => {
             },
           ],
         }),
-      }
+      },
     );
 
     if (!fetchResponse.ok) {
@@ -40,9 +40,6 @@ export const Gemini =  async (req, res) => {
 
     res.json({ reply });
   } catch (err) {
-    console.error("Gemini fetch error:", err.message); 
-    res.status(500).json({ error: "Failed to get AI response from Gemini" });
+    next(err);
   }
 };
-
-

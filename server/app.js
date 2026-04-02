@@ -16,10 +16,8 @@ app.use(
   cors({
     origin: "*",
     credentials: true,
-  })
+  }),
 );
-
-
 
 app.get("/", (req, res) => {
   res.send(" Server Running");
@@ -49,17 +47,15 @@ const sessionHosts = {};
 const userNames = {};
 
 io.on("connection", (socket) => {
-  console.log(` Client connected: ${socket.id}`);
+  console.log("User connected with socket id : ", socket.id);
 
   socket.on("joinRoom", async (sessionId) => {
     if (!sessionId) return;
     socket.join(sessionId);
-    console.log(` ${socket.id} joined room: ${sessionId}`);
 
     // Assign first user as host
     if (!sessionHosts[sessionId]) {
       sessionHosts[sessionId] = socket.id;
-      console.log(` ${socket.id} set as host for ${sessionId}`);
     }
 
     if (!rooms[sessionId]) {
@@ -102,7 +98,6 @@ io.on("connection", (socket) => {
     try {
       await Redis.set(`${sessionId}:structure`, JSON.stringify(structure));
       io.to(sessionId).emit("treeStructure", { structure, expanded });
-      console.log(" Folder structure updated and broadcasted");
     } catch (err) {
       console.error(" Error saving structure to Redis:", err);
     }
@@ -112,7 +107,7 @@ io.on("connection", (socket) => {
     try {
       await Redis.set(
         `${sessionId}:activeFile:${file.path}`,
-        JSON.stringify(file)
+        JSON.stringify(file),
       );
       if (to) {
         io.to(to).emit("fileOpened", { file });
@@ -135,7 +130,7 @@ io.on("connection", (socket) => {
     try {
       await Redis.set(
         `${sessionId}:activeFile:${file.path}`,
-        JSON.stringify(file)
+        JSON.stringify(file),
       );
       io.to(sessionId).emit("fileUpdated", { file });
     } catch (err) {
@@ -148,7 +143,6 @@ io.on("connection", (socket) => {
     if (!hostId) return;
     if (hostId === socket.id) return;
 
-    console.log(` File requested: ${path} → Host ${hostId}`);
     io.to(hostId).emit("request-file", { path, requesterId: socket.id });
   });
 
@@ -187,17 +181,14 @@ io.on("connection", (socket) => {
     // Clean up host if disconnected
     for (const sessionId in sessionHosts) {
       if (sessionHosts[sessionId] === socket.id) {
-        console.log(` Host ${socket.id} left session ${sessionId}`);
         delete sessionHosts[sessionId];
 
         const remainingSockets = Object.keys(
-          io.sockets.adapter.rooms.get(sessionId) || {}
+          io.sockets.adapter.rooms.get(sessionId) || {},
         );
         if (remainingSockets.length > 0) {
           sessionHosts[sessionId] = remainingSockets[0];
-          console.log(
-            ` New host for session ${sessionId}: ${sessionHosts[sessionId]}`
-          );
+
           io.to(sessionId).emit("role-assigned", { isHost: true });
         }
       }

@@ -34,11 +34,11 @@ export default function SignupPage() {
       return;
     }
 
-    const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
     try {
       const response = await fetch(
-        `https://coderush-tvf3.onrender.com/api/auth/signup`,
+        `${BACKEND_URL}/api/auth/signup`,
         {
           method: "POST",
           headers: {

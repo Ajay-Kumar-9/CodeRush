@@ -63,11 +63,7 @@ const Index: React.FC = () => {
   const [activeFile, setActiveFile] = useState<OpenFile>({
     name: "untitled",
     path: "untitled",
-    content:
-      `// ⚠️ Avoid selecting the root folder.\n` +
-      `// ✅ Pick a folder *inside* it to work on files.\n` +
-      `// 💡 Or just start coding below — no folder needed!\n\n`,
-  });
+    content: ""});
 
   const [activePanel, setActivePanel] = useState<
     "Chat" | "Collaborators" | "Voice" | "AI" | null

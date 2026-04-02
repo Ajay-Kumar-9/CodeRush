@@ -33,21 +33,19 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const NEXT_PUBLIC_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-    //  https://coderush-tvf3.onrender.com
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
     try {
       const response = await fetch(
-        `https://coderush-tvf3.onrender.com/api/auth/login`,
-        
+        `${BACKEND_URL}/api/auth/login`,
+
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
-        }
+        },
       );
 
       const data = await response.json();
@@ -58,7 +56,7 @@ export default function LoginPage() {
       }
 
       // If login is successful, redirect to the editor page
-      toast.success(data.message );
+      toast.success(data.message);
 
       createRoom();
     } catch (error) {
@@ -160,6 +158,7 @@ export default function LoginPage() {
             onMouseOut={(e) =>
               (e.currentTarget.style.backgroundColor = "#F5E0B7")
             }
+            type="submit"
           >
             Sign In
           </button>
