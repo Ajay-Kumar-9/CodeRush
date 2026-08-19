@@ -55,6 +55,16 @@ export default function LoginPage() {
         return;
       }
 
+          // Store JWT token in localStorage
+    if (data.token) {
+      localStorage.setItem("token", data.token);
+      console.log("Token stored successfully");
+    } else {
+      console.error("Token not received from backend");
+      toast.error("Login successful but token was not received");
+      return;
+    }
+
       // If login is successful, redirect to the editor page
       toast.success(data.message);
 
