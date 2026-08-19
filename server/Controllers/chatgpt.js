@@ -5,6 +5,8 @@ dotenv.config();
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 export const Gemini = async (req, res, next) => {
+
+  console.log("GEMINI KEY :" , GEMINI_API_KEY);
   const { message } = req.body;
 
   if (!message) {
