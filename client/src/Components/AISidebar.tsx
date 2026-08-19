@@ -13,6 +13,8 @@ export default function AiHelpSidebar({ onClose }: AiHelpSidebarProps) {
   const [chat, setChat] = useState<{ role: "user" | "ai"; text: string }[]>([]);
   const [loading, setLoading] = useState(false);
 
+  const token = localStorage.getItem("token");
+
   const handleSend = async () => {
     if (!inputValue.trim()) return;
 
@@ -26,7 +28,9 @@ export default function AiHelpSidebar({ onClose }: AiHelpSidebarProps) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
+
         body: JSON.stringify({ message: userMessage }),
       });
 
@@ -55,12 +59,14 @@ export default function AiHelpSidebar({ onClose }: AiHelpSidebarProps) {
       {/* Header */}
       <div className="flex justify-between items-center px-4 py-3 bg-teal-600">
         <p className="text-white font-semibold text-lg">AI Assistance</p>
-        <RxCross2 className="text-white hover:text-red-500 cursor-pointer" onClick={onClose} />
+        <RxCross2
+          className="text-white hover:text-red-500 cursor-pointer"
+          onClick={onClose}
+        />
       </div>
 
       {/* Chat Body */}
       <div className="flex-1 p-4 text-sm text-gray-700 overflow-y-auto space-y-4 bg-white relative">
-       
         {chat.length === 0 && !loading && (
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center  text-gray-400">
@@ -71,8 +77,6 @@ export default function AiHelpSidebar({ onClose }: AiHelpSidebarProps) {
             </div>
           </div>
         )}
-
-
 
         {/* Chat messages */}
         {chat.map((msg, idx) => (
@@ -99,7 +103,7 @@ export default function AiHelpSidebar({ onClose }: AiHelpSidebarProps) {
                   >
                     <code>{block.trim()}</code>
                   </pre>
-                )
+                ),
               )
             ) : (
               <p>{msg.text}</p>
@@ -107,7 +111,6 @@ export default function AiHelpSidebar({ onClose }: AiHelpSidebarProps) {
           </div>
         ))}
 
-       
         {loading && (
           <p className="text-xs italic text-gray-400 animate-pulse">
             Thinking...
@@ -115,7 +118,6 @@ export default function AiHelpSidebar({ onClose }: AiHelpSidebarProps) {
         )}
       </div>
 
-   
       <div className="px-4 py-3 border-t flex items-center gap-2 bg-white shadow-inner">
         <input
           type="text"
