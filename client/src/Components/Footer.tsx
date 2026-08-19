@@ -30,7 +30,10 @@ export default function Footer() {
             </div>
 
             <div className="text-[#E2C98C]/80">
-              <p>&copy; 2025 Ajay Kumar. All rights reserved.</p>
+              <p>
+                &copy; {new Date().getFullYear()} CodeRush. All rights
+                reserved.
+              </p>
             </div>
           </div>
         </div>
