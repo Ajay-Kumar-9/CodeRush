@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+
 dotenv.config();
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
@@ -7,7 +8,17 @@ export const Gemini = async (req, res, next) => {
   const { message } = req.body;
 
   if (!message) {
-    return res.status(400).json({ message: "Message is required" });
+    return res.status(400).json({
+      message: "Message is required",
+    });
+  }
+
+  if (!GEMINI_API_KEY) {
+    console.error("GEMINI_API_KEY is missing");
+
+    return res.status(500).json({
+      message: "Gemini API key is not configured",
+    });
   }
 
   try {
@@ -22,24 +33,37 @@ export const Gemini = async (req, res, next) => {
           contents: [
             {
               role: "user",
-              parts: [{ text: message }],
+              parts: [
+                {
+                  text: message,
+                },
+              ],
             },
           ],
         }),
-      },
+      }
     );
 
+    const data = await fetchResponse.json();
+
     if (!fetchResponse.ok) {
-      throw new Error(`Gemini API error: ${fetchResponse.statusText}`);
+      console.error("Gemini API Error:", data);
+
+      return res.status(fetchResponse.status).json({
+        message: "Gemini API request failed",
+        error: data,
+      });
     }
 
-    const data = await fetchResponse.json();
     const reply =
       data.candidates?.[0]?.content?.parts?.[0]?.text ||
       "No response from Gemini.";
 
-    res.json({ reply });
+    return res.status(200).json({
+      reply,
+    });
   } catch (err) {
+    console.error("Gemini Controller Error:", err);
     next(err);
   }
 };
