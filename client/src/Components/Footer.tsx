@@ -24,7 +24,7 @@ export default function Footer() {
               <Link href="https://github.com/Ajay-Kumar-9" target="_blank">
                 <FaGithub className="h-8 w-8 hover:text-white transition-colors" />
               </Link>
-              <Link href="https://ajay-kumar-eight.vercel.app/" target="_blank">
+              <Link href="https://ajay-portfolio-drab.vercel.app" target="_blank">
                 <FaGlobe className="h-8 w-8 hover:text-white transition-colors" />
               </Link>
             </div>

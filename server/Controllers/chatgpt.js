@@ -77,7 +77,7 @@ export const Gemini = async (req, res, next) => {
       reply,
     });
   } catch (err) {
-    console.error(" Gemini Controller Error:");
+    console.error("❌ Gemini Controller Error:");
     console.error(err);
 
     next(err);

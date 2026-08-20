@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Code2 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { nanoid } from "nanoid";
+import Navbar from "@/Components/Navbar";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -76,6 +77,8 @@ export default function LoginPage() {
   };
 
   return (
+    <div>
+    
     <div
       className="min-h-screen flex items-center justify-center p-4"
       style={{ backgroundColor: "#06044B" }}
@@ -186,6 +189,8 @@ export default function LoginPage() {
           </div>
         </form>
       </div>
+    </div>
+   
     </div>
   );
 }
