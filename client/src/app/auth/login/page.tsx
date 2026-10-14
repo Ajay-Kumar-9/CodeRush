@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast";
 import { nanoid } from "nanoid";
 import Navbar from "@/Components/Navbar";
 
+
 export default function LoginPage() {
   const router = useRouter();
 

@@ -41,6 +41,15 @@ const io = new Server(server, {
 const sessionHosts = {};
 const userNames = {};
 
+// Redis save helper: kabhi crash ya broadcast block nahi karega
+const safeRedisSet = async (key, value, label) => {
+  try {
+    await Redis.set(key, value);
+  } catch (err) {
+    console.error(` Redis error (${label}):`, err.message);
+  }
+};
+
 io.on("connection", (socket) => {
   console.log("User connected with socket id : ", socket.id);
 
@@ -61,7 +70,7 @@ io.on("connection", (socket) => {
       rooms[sessionId].push(socket.id);
     }
 
-    // Send list of collaborators to everyone except the first user
+    // Send list of collaborators to everyone in the room
     io.to(sessionId).emit("collaborators-update", {
       collaborators: rooms[sessionId],
     });
@@ -85,32 +94,37 @@ io.on("connection", (socket) => {
         });
       }
     } catch (err) {
-      console.error(" Redis error in joinRoom:", err);
+      console.error(" Redis error in joinRoom:", err.message);
     }
   });
 
+  // Folder tree: pehle broadcast, phir Redis mein save
   socket.on("folder-structure", async ({ structure, sessionId, expanded }) => {
-    try {
-      await Redis.set(`${sessionId}:structure`, JSON.stringify(structure));
-      io.to(sessionId).emit("treeStructure", { structure, expanded });
-    } catch (err) {
-      console.error(" Error saving structure to Redis:", err);
-    }
+    if (!sessionId) return;
+    io.to(sessionId).emit("treeStructure", { structure, expanded });
+    await safeRedisSet(
+      `${sessionId}:structure`,
+      JSON.stringify(structure),
+      "folder-structure",
+    );
   });
 
+  // File open: pehle broadcast, phir Redis mein save
   socket.on("fileOpened", async ({ file, sessionId, to }) => {
-    try {
-      await Redis.set(
+    if (!file?.path) return;
+
+    if (to) {
+      io.to(to).emit("fileOpened", { file });
+    } else if (sessionId) {
+      socket.to(sessionId).emit("fileOpened", { file });
+    }
+
+    if (sessionId) {
+      await safeRedisSet(
         `${sessionId}:activeFile:${file.path}`,
         JSON.stringify(file),
+        "fileOpened",
       );
-      if (to) {
-        io.to(to).emit("fileOpened", { file });
-      } else {
-        io.to(sessionId).emit("fileOpened", { file });
-      }
-    } catch (err) {
-      console.error(" Error storing opened file:", err);
     }
   });
 
@@ -120,17 +134,17 @@ io.on("connection", (socket) => {
     io.to(sessionId).emit("chat-message", { message, sender });
   });
 
-  //files exchange setup
+  // Live code changes: sender ko wapas nahi bhejna, baaki sabko turant bhejna
   socket.on("fileUpdated", async ({ file, sessionId }) => {
-    try {
-      await Redis.set(
-        `${sessionId}:activeFile:${file.path}`,
-        JSON.stringify(file),
-      );
-      io.to(sessionId).emit("fileUpdated", { file });
-    } catch (err) {
-      console.error(" Error updating file content:", err);
-    }
+    if (!file?.path || !sessionId) return;
+
+    socket.to(sessionId).emit("fileUpdated", { file });
+
+    await safeRedisSet(
+      `${sessionId}:activeFile:${file.path}`,
+      JSON.stringify(file),
+      "fileUpdated",
+    );
   });
 
   socket.on("request-file", ({ path, sessionId }) => {
@@ -141,9 +155,10 @@ io.on("connection", (socket) => {
     io.to(hostId).emit("request-file", { path, requesterId: socket.id });
   });
 
-  socket.on("file-response", ({ file, sessionId, to }) => {
-    if (!to) return;
-    io.to(sessionId).emit("fileOpened", { file });
+  // Host ka jawab sirf requester ko jayega, poore room ko nahi
+  socket.on("file-response", ({ file, to }) => {
+    if (!to || !file) return;
+    io.to(to).emit("fileOpened", { file });
   });
 
   //voice call  setup
@@ -173,18 +188,35 @@ io.on("connection", (socket) => {
 
     delete userNames[socket.id];
 
+    // Collaborators list se purani socket id hatao
+    for (const sessionId in rooms) {
+      if (rooms[sessionId].includes(socket.id)) {
+        rooms[sessionId] = rooms[sessionId].filter((id) => id !== socket.id);
+
+        if (rooms[sessionId].length === 0) {
+          delete rooms[sessionId];
+        } else {
+          io.to(sessionId).emit("collaborators-update", {
+            collaborators: rooms[sessionId],
+          });
+        }
+      }
+    }
+
     // Clean up host if disconnected
     for (const sessionId in sessionHosts) {
       if (sessionHosts[sessionId] === socket.id) {
         delete sessionHosts[sessionId];
 
-        const remainingSockets = Object.keys(
-          io.sockets.adapter.rooms.get(sessionId) || {},
+        const remainingSockets = Array.from(
+          io.sockets.adapter.rooms.get(sessionId) || [],
         );
         if (remainingSockets.length > 0) {
-          sessionHosts[sessionId] = remainingSockets[0];
+          const newHostId = remainingSockets[0];
+          sessionHosts[sessionId] = newHostId;
 
-          io.to(sessionId).emit("role-assigned", { isHost: true });
+          // Sirf naye host ko batao, poore room ko nahi
+          io.to(newHostId).emit("role-assigned", { isHost: true });
         }
       }
     }

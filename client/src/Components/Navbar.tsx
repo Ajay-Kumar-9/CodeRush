@@ -31,7 +31,9 @@ const Navbar: React.FC<NavbarProps> = ({ onChatClick, onVoiceClick, onCollaborat
   }, []);
 
 
-  const initials = user ? `${user.firstName[0]}${user.lastName[0]}` : "U";
+const initials = user
+  ? `${user.firstName?.[0] ?? ""}${user.lastName?.[0] ?? ""}`.toUpperCase() || "U"
+  : "U";
 
   const copyInviteLink = () => {
     const currentUrl = window.location.href;
